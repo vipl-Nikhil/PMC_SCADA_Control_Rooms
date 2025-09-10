@@ -1,0 +1,275 @@
+.bottom-left-counters {
+  position: absolute;
+  bottom: 20px;
+  left: 80px;
+  display: flex;
+  gap: 20px;   /* icons gap */
+  align-items: flex-end; /* all row same  */
+  margin-left: -58px;
+  margin-bottom: 10px;
+}
+
+/* Base card */
+.counter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Map + Android + iOS icon same size */
+.counter-icon,
+.counter-icon1 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Remove extra margins from map */
+.counter-icon1 {
+  margin: 0;  
+}
+
+.counter-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.counter-icon1 img {
+  width: 47px;
+  height: 47px;
+}
+
+/* Extra icons show above Map */
+.extra-icons {
+  position: absolute;
+  bottom: 60px; /* Map top */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.small-card {
+  width: 48px;
+  height: 51px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.small-card img {
+  width: 50px;
+    height: 51px;
+    margin-top: 0px;
+}
+
+/* second img click open icon*/
+.second-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-img1 {
+  width: 43px;
+  height: 43px;
+}
+
+.inline-card {
+  position: absolute;
+  top: -11px;
+  left: 72px; /* icon ke right side par card */
+  background: #fff;
+  border-radius: 8px;
+padding: 13px 16px;  
+display: flex;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  z-index: 999;
+      gap: 3px;
+}
+
+.inline-card img {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.back-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.color-preview {
+  width: 50px;
+  height: 30px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.color-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left:-10px;
+}
+
+.rgb-values {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+
+.color-picker-popup {
+  position: absolute;
+  top: -250px; /* Google icon ke upar */
+  left: 0;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+
+.color-picker-wrapper {
+  position: absolute;
+  top: -250px;  /* icon ke upar */
+  left: 0;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+}
+
+.rgb-values {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+
+.color-picker-wrapper {
+  position: absolute;
+  top: -315px;  /* icon ke upar */
+  left: 21px;
+  z-index: 1000;
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sub-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  margin-right: -139px;   
+}
+
+.sub-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sub-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+/*third map icon css*/
+.third-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.sub-icons1 {
+  position: absolute;
+  top: 50%;
+  left: 58px; /* left side used */
+  transform: translateY(-50%);
+  display: flex;
+  gap: 15px;
+  
+  padding: 8px 12px;
+  border-radius: 25px;
+}
+
+.sub-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.sub-icon:hover {
+  transform: scale(1.1);
+}
+
+.sub-icon img {
+ width: 40px;
+    height: 48px;
+}
+
+.counter-value {
+  position: relative;
+  z-index: 10;
+
+  background: #76b7b2;
+  color: #ffffff;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.00625rem;
+
+border-radius: 21%;   /*circle */
+  width: 42px;            /* Same width */
+  height: 28px;           /* Same height */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-left: 5px;
+  margin-bottom: -9px;
+}
