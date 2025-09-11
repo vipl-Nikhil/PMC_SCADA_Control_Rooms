@@ -75,7 +75,7 @@ const DocsSidebar = ({ isDocsOpen, setIsDocsOpen }) => {
             className={`tab ${activeTab === "live" ? "active" : ""}`}
             onClick={() => setActiveTab("live")}
           >
-            Lives Data
+            Live Data 
           </button>
           <button
             className={`tab ${activeTab === "upcoming" ? "active" : ""}`}
