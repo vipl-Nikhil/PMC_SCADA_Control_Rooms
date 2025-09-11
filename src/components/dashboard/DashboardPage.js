@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, Marker, Polyline, useLoadScript } from "@react-google-maps/api";
 import { filtersInitial,workOrders } from "./filtersData";
@@ -79,15 +79,29 @@ export default function DashboardPage() {
   //nav bar filters click show click on
     const [selectedFilter, setSelectedFilter] = useState(null);
 
+    //left side work order nav button
+    
+  const [contractors, setContractors] = useState([]);
+const [plants, setPlants] = useState([]);
+
+useEffect(() => {
+  // Unique contractors
+  const uniqueContractors = [...new Set(workOrders.map(wo => wo.contractor))];
+  setContractors(uniqueContractors);
+
+  // Unique plants
+  const uniquePlants = [...new Set(workOrders.map(wo => wo.project))]; // ya wo.plant agar field available ho
+  setPlants(uniquePlants);
+}, []);
 
   const handleFilterClick = (key) => {
   setActiveKeys((prev) => {
     const newSet = new Set(prev);
     if (newSet.has(key)) {
-      // 🔴 agar pehle se open hai to remove kardo (CLOSE)
+      //agar pehle se open hai to remove kardo (CLOSE)
       newSet.delete(key);
     } else {
-      // 🟢 otherwise open karo
+      //otherwise open karo
       newSet.add(key);
     }
     return newSet;
@@ -99,6 +113,8 @@ export default function DashboardPage() {
       prev === filterKey ? null : filterKey
     );
   };
+
+
 
 
 
@@ -380,78 +396,86 @@ export default function DashboardPage() {
 
 
 {/*  Selected Filter Content nav bar*/}
+
 <div className={`filters-content ${activeKeys.size > 0 ? "active" : ""}`}>
-{activeKeys.has("wo") && (
-  <div className="card-list">
-    {workOrders.map((wo) => (
-      <div key={wo.id} className="card-item">
-        {/* Top Row: ID + time */}
-        <div className="card-top">
-          <span className="status-dot" /> 
-          <span className="wo-id">{wo.id}</span>
-          <span className="wo-time">{wo.time}</span>
-        </div>
-
-        {/* Title */}
-        <div className="wo-title">{wo.title}</div>
-
-        {/* Info */}
-        <div className="wo-info">
-          <p>{wo.contractor}</p>
-          <p>{wo.zone}</p>
-          <p>{wo.project}</p>
-          <p>{wo.age}</p>
-        </div>
-
-        {/* Bottom Icons nav bar*/}
-       <div className="wo-icons-container">
-  {/* Top icons with badge */}
-  <div className="track">
-    <div className="moving-icon">
-      <img src="/rollers.jpg" alt="Roller" />
-      <span className="icon-count">0</span>
+  {/* Summary cards on left side - always visible */}
+  <div className="filters-summary">
+    <div className="summary-card">
+      <div className="summary-count">{workOrders.length}</div>
+      <div className="summary-label">Work Order</div>
     </div>
-    <div className="moving-icon">
-      <img src="/river.jpg" alt="Paver" />
-      <span className="icon-count">0</span>
+    <div className="summary-card">
+      <div className="summary-count">{contractors.length}</div>
+      <div className="summary-label">Contractor</div>
     </div>
-     <div className="moving-icon">
-      <img src="/dumpers.jpg" alt="Tipper" />
-      <span className="icon-count">0</span>
-    </div>
-    <div className="moving-icon">
-      <img src="/mixers.jpg" alt="TM" />
-      <span className="icon-count">0</span>
+    <div className="summary-card">
+      <div className="summary-count">{plants.length}</div>
+      <div className="summary-label">Plant</div>
     </div>
   </div>
 
+  {/* Work order cards */}
+  {activeKeys.has("wo") && (
+    <div className="card-list">
+      {workOrders.map((wo) => (
+        <div key={wo.id} className="card-item">
+          <div className="card-top">
+            <span className="status-dot" /> 
+            <span className="wo-id">{wo.id}</span>
+            <span className="wo-time">{wo.time}</span>
+          </div>
 
-  
+          <div className="wo-title">{wo.title}</div>
 
-  {/* Empty track for travelling icons */}
- 
-</div>
+          <div className="wo-info">
+            <p>{wo.contractor}</p>
+            <p>{wo.zone}</p>
+            <p>{wo.project}</p>
+            <p>{wo.age}</p>
+          </div>
 
-      </div>
-    ))}
-  </div>
-)}
+          <div className="wo-icons-container">
+            <div className="track-container">
+              <div className="track"></div>
 
+              <div className="moving-icon roller">
+                <img src="/rollers.jpg" alt="Roller" />
+                <span className="icon-count">0</span>
+              </div>
+              <div className="moving-icon paver">
+                <img src="/river.jpg" alt="Paver" />
+                <span className="icon-count">0</span>
+              </div>
+              <div className="moving-icon tipper">
+                <img src="/dumpers.jpg" alt="Tipper" />
+                <span className="icon-count">0</span>
+              </div>
+              <div className="moving-icon mixer">
+                <img src="/mixers.jpg" alt="Mixer" />
+                <span className="icon-count">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
 
   {activeKeys.has("plant") && (
     <div className="card-list">
       <h3>Plants</h3>
-      {/* Map plant data here dynamically */}
     </div>
   )}
 
   {activeKeys.has("contractor") && (
     <div className="card-list">
       <h3>Contractors</h3>
-      {/* Map contractor data here dynamically */}
     </div>
   )}
 </div>
+
+
+
 
 
 

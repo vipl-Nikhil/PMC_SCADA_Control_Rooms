@@ -589,6 +589,7 @@ box-shadow: 0 0 15px rgb(12 12 7 / 8%);
 }
 
 
+
 .card-list {
   margin-top: 10px;
 }
@@ -652,7 +653,7 @@ background: #76b7b2;
   margin-bottom: -7px;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-left: 61px;
+  margin-left: 75px;
   margin-right: -35px;
 }
 
@@ -732,6 +733,7 @@ background: #76b7b2;
   font-size: 10px;
   font-weight: bold;
   padding: 0;
+      margin-right: -4px;
 }
 
 
@@ -741,23 +743,37 @@ background: #76b7b2;
   margin-left: 6px;
 }
 
-.track {
+/* road patari run way */
+.track-container {
   position: relative;
   width: 55%;
+  margin: 20px auto;
+  height: 31px; /* icons ke liye jagah */
+  margin-right: 11px;
+}
+
+.track {
+  position: absolute;
+  bottom: 23px;
+  width: 200%;              /* double width taaki scroll effect mile */
   height: 6px;
-  margin-top: 20px;
-  background-color: #ddd;
+  background: repeating-linear-gradient(
+    to right,
+    #ddd,
+    #ddd 20px,
+    #bbb 20px,
+    #bbb 40px
+  );
   border-radius: 4px;
-  overflow: visible;
-  margin-left: auto;
+  animation: moveTrack 5s linear infinite; /* track chalega */
 }
 
 .moving-icon {
   position: absolute;
-  top: -15px;          /* above track */
-  width: 20px;
-  height: 20px;
-  animation: move 5s linear infinite; /* continuous speed */
+  top: -25px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
 }
 
 .moving-icon img {
@@ -765,31 +781,85 @@ background: #76b7b2;
   height: 100%;
 }
 
-/* Initial spacing for icons */
-.moving-icon:nth-child(1) { left: 0%; }
-.moving-icon:nth-child(2) { left: 25%; }
-.moving-icon:nth-child(3) { left: 50%; }
-.moving-icon:nth-child(4) { left: 75%; }
-
-@keyframes move {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(120%); } /* moves slightly beyond track */
+.moving-icon span {
+  display: block;
+  font-size: 12px;
+  text-align: center;
 }
 
+/* fix icons at different positions */
+.moving-icon:nth-child(2) { left: 0%; }
+.moving-icon:nth-child(3) { left: 25%; }
+.moving-icon:nth-child(4) { left: 50%; }
+.moving-icon:nth-child(5) { left: 75%; }
 
+@keyframes moveTrack {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-10%); } /* track ke andar scrolling effect */
+}
 
 
 
 
  /* nav bar card bike 
 
+ 
 /*close nav bar filter */
+
+.filters-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 120px; /* fixed width */
+  position: absolute; /* stays on left */
+  left: 9px;
+  top: 10px;
+}
+
+.summary-card {
+  padding: 13px;
+  border-radius: 10px;
+  text-align: center;
+  width: 21%; /* fills filters-summary width */
+  height: 47px; /* fixed height */
+}
+
+
+.summary-count {
+  width: 30px;           
+  height: 30px;
+  border-radius: 23%;
+  background-color: white; /* default background */
+  color: #4285f4;            /* default text color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;       
+  font-weight: bold;
+  margin-bottom: 5px;    
+  border: 1px solid #bababa; /* optional: to make it visible */
+}
+
+/* Add this class dynamically in React when number is 0 */
+.summary-count.zero {
+  background-color: black;
+  color: white;
+}
+
+.summary-label {
+  font-size: 12px;
+  text-align: center;
+  color: #5f6368;
+}
+
+
 /* Top-right circular actions */
 .actions-bar {
   display: flex;
   align-items: center;
   gap: 8px;
 }
+
 
 .actions-bar button {
   display: flex;

@@ -39,3 +39,14 @@ export const workOrders = [
     time: "10:36",
   },
 ];
+
+export const contractors = [
+  { id: 1, name: "Vasundhara IT Pvt Ltd" },
+  { id: 2, name: "B.G Shirke Pvt Ltd" },
+];
+
+export const plants = [
+  { id: 1, name: "RMC Plant" },
+  { id: 2, name: "Crusher Plant" },
+];
+
