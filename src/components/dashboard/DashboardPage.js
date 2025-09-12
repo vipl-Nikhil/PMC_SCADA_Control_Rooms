@@ -6,7 +6,7 @@ import DocsSidebar from "./DocsSidebars";
 import BottomLeftCounter from "./BottomLeftCounters";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaCalendarAlt } from "react-icons/fa";  // icon import इथे कर
+import { FaCalendarAlt } from "react-icons/fa";  // icon import 
 import "react-datepicker/dist/react-datepicker.css";
 
 
