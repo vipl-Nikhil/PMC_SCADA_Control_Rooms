@@ -192,9 +192,6 @@ export default function BottomLeftCounter({ onMapTypeChange }) {
     <img src="/map2.jpg" alt="Choose color" className="icon-img1" />
   </button>
 </div>
-
-
-
           </div>
         )}
       </div>

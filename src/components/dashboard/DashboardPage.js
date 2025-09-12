@@ -1,9 +1,14 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useMemo, useState, useRef, useEffect,forwardRef  } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, Marker, Polyline, useLoadScript } from "@react-google-maps/api";
 import { filtersInitial,workOrders } from "./filtersData";
 import DocsSidebar from "./DocsSidebars";
 import BottomLeftCounter from "./BottomLeftCounters";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaCalendarAlt } from "react-icons/fa";  // icon import इथे कर
+import "react-datepicker/dist/react-datepicker.css";
+
 
 import "./DashboardPage.css";
 
@@ -51,6 +56,7 @@ const vehicles = [
 /** =========================
  *  Dashboard Component
  *  ========================= */
+
 export default function DashboardPage() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: MAPS_API_KEY,
@@ -171,7 +177,27 @@ useEffect(() => {
     navigate("/login");
   };
 
+//toggle button nav side work load serach button used 
+  const [showFilters, setShowFilters] = useState(true);
 
+// date funtlity click date
+ const [showDatePicker, setShowDatePicker] = useState(false);
+  const [startDate, setStartDate] = useState(new Date("2022-10-24"));
+  const [endDate, setEndDate] = useState(new Date("2025-07-20"));
+
+  const handleApply = () => {
+     console.log("Start:", startDate, "End:", endDate);
+    setShowDatePicker(false); // close date picker after OK
+  };
+
+  //  Custom Input for DatePicker date nav
+const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
+  <div className="custom-date-input" onClick={onClick} ref={ref}>
+     <span>{value}</span>
+    <FaCalendarAlt style={{ marginRight: "6px", cursor: "pointer" }} />
+   
+  </div>
+));
 
   return (
     <div className="dash-wrapper">
@@ -396,83 +422,145 @@ useEffect(() => {
 
 
 {/*  Selected Filter Content nav bar*/}
+  <>
+    {showFilters && (
+        <div className={`filters-content ${activeKeys.size > 0 ? "active" : ""}`}>
+          {/* Summary cards on left side - always visible */}
+          <div className="filters-container">
+            <div className="filters-layout">
+              {/* LEFT SIDE: Summary counts */}
+              <div className="filters-summary">
+                <div className="summary-card">
+                  <div className="summary-count">{workOrders.length}</div>
+                  <div className="summary-label">Work Order</div>
+                </div>
+                <div className="summary-card">
+                  <div className="summary-count">{contractors.length}</div>
+                  <div className="summary-label">Contractor</div>
+                </div>
+                <div className="summary-card">
+                  <div className="summary-count">{plants.length}</div>
+                  <div className="summary-label">Plant</div>
+                </div>
+              </div>
 
-<div className={`filters-content ${activeKeys.size > 0 ? "active" : ""}`}>
-  {/* Summary cards on left side - always visible */}
-  <div className="filters-summary">
-    <div className="summary-card">
-      <div className="summary-count">{workOrders.length}</div>
-      <div className="summary-label">Work Order</div>
-    </div>
-    <div className="summary-card">
-      <div className="summary-count">{contractors.length}</div>
-      <div className="summary-label">Contractor</div>
-    </div>
-    <div className="summary-card">
-      <div className="summary-count">{plants.length}</div>
-      <div className="summary-label">Plant</div>
-    </div>
-  </div>
+              {/* RIGHT SIDE: Search + Filters */}
+              <div className="filters-right">
+                {/* Search box with Close */}
+                <div className="search-container">
+                  <input
+                    type="text"
+                    placeholder="Search.."
+                    className="search-input"
+                  />
+                  <button className="clear-btn" onClick={() => setShowFilters(false)}>
+                    ✕
+                  </button>
+                </div>
 
-  {/* Work order cards */}
-  {activeKeys.has("wo") && (
-    <div className="card-list">
-      {workOrders.map((wo) => (
-        <div key={wo.id} className="card-item">
-          <div className="card-top">
-            <span className="status-dot" /> 
-            <span className="wo-id">{wo.id}</span>
-            <span className="wo-time">{wo.time}</span>
+                {/* Filters row */}
+                <div className="filters-row">
+      <div className="date-filter">
+        {/* Filter chip */}
+        <div
+          className="filter-chip"
+          onClick={() => setShowDatePicker(!showDatePicker)}
+        >
+          {startDate.toLocaleDateString("en-US")} to{" "}
+          {endDate.toLocaleDateString("en-US")}
+        </div>
+
+        {/* Popup Date Picker */}
+        {showDatePicker && (
+          <div className="date-picker-popup">
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              dateFormat="MM/dd/yyyy"
+              customInput={<CustomDateInput />}
+            />
+            <span style={{ margin: "0 8px" }}>To</span>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              dateFormat="MM/dd/yyyy"
+              customInput={<CustomDateInput />}
+            />
+            <button className="ok-btn" onClick={handleApply}>
+              OK
+            </button>
           </div>
+        )}
+      </div>
 
-          <div className="wo-title">{wo.title}</div>
-
-          <div className="wo-info">
-            <p>{wo.contractor}</p>
-            <p>{wo.zone}</p>
-            <p>{wo.project}</p>
-            <p>{wo.age}</p>
-          </div>
-
-          <div className="wo-icons-container">
-            <div className="track-container">
-              <div className="track"></div>
-
-              <div className="moving-icon roller">
-                <img src="/rollers.jpg" alt="Roller" />
-                <span className="icon-count">0</span>
-              </div>
-              <div className="moving-icon paver">
-                <img src="/river.jpg" alt="Paver" />
-                <span className="icon-count">0</span>
-              </div>
-              <div className="moving-icon tipper">
-                <img src="/dumpers.jpg" alt="Tipper" />
-                <span className="icon-count">0</span>
-              </div>
-              <div className="moving-icon mixer">
-                <img src="/mixers.jpg" alt="Mixer" />
-                <span className="icon-count">0</span>
+      <div className="filter-chip">Work Type</div>
+      <div className="filter-chip">Zone</div>
+    </div>
               </div>
             </div>
           </div>
+
+          {/* Work order cards */}
+          {activeKeys.has("wo") && (
+            <div className="card-list">
+              {workOrders.map((wo) => (
+                <div key={wo.id} className="card-item">
+                  <div className="card-top">
+                    <span className="status-dot" />
+                    <span className="wo-id">{wo.id}</span>
+                    <span className="wo-time">{wo.time}</span>
+                  </div>
+
+                  <div className="wo-title">{wo.title}</div>
+
+                  <div className="wo-info">
+                    <p>{wo.contractor}</p>
+                    <p>{wo.zone}</p>
+                    <p>{wo.project}</p>
+                    <p>{wo.age}</p>
+                  </div>
+
+                  <div className="wo-icons-container">
+                    <div className="track-container">
+                      <div className="track"></div>
+                      <div className="moving-icon roller">
+                        <img src="/rollers.jpg" alt="Roller" />
+                        <span className="icon-count">0</span>
+                      </div>
+                      <div className="moving-icon paver">
+                        <img src="/river.jpg" alt="Paver" />
+                        <span className="icon-count">0</span>
+                      </div>
+                      <div className="moving-icon tipper">
+                        <img src="/dumpers.jpg" alt="Tipper" />
+                        <span className="icon-count">0</span>
+                      </div>
+                      <div className="moving-icon mixer">
+                        <img src="/mixers.jpg" alt="Mixer" />
+                        <span className="icon-count">0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activeKeys.has("plant") && (
+            <div className="card-list">
+              <h3>Plants</h3>
+            </div>
+          )}
+
+          {activeKeys.has("contractor") && (
+            <div className="card-list">
+              <h3>Contractors</h3>
+            </div>
+          )}
         </div>
-      ))}
-    </div>
-  )}
-
-  {activeKeys.has("plant") && (
-    <div className="card-list">
-      <h3>Plants</h3>
-    </div>
-  )}
-
-  {activeKeys.has("contractor") && (
-    <div className="card-list">
-      <h3>Contractors</h3>
-    </div>
-  )}
-</div>
+      )}
+    </>
+  
 
 
 
