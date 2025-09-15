@@ -924,6 +924,119 @@ background: #76b7b2;
 
 /* close date nav funtinality */
 
+/* work type css click open check box nav */
+.filter-card {
+  position: absolute;
+  top: 102px;
+ left: 88px;
+    width: 306px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.checkbox-row-single {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.filter-card label {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* spacing between checkbox and text */
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 0.805rem;
+  font-weight: 500;
+  letter-spacing: 0.00625rem;
+  text-transform: none;
+  color: #1f1f1f;
+  cursor: pointer;
+}
+
+.filter-card input[type="checkbox"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #76b7b2;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.filter-card input[type="checkbox"]:checked {
+  background-color: #76b7b2;
+}
+
+.filter-card input[type="checkbox"]:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 2px;
+}
+
+
+.filter-card button {
+  margin-top: 8px;
+  width: 19%;
+  padding: 5px;
+  background-color: #76b7b2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+      margin-left: 247px;
+
+}
+
+.filter-card button:hover {
+  background-color: #76b7b2;
+}
+
+
+.two-line-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.two-line-label span {
+  line-height: 1.2;
+  font-size: 0.805rem;
+  font-weight: 500;
+  color: #1f1f1f;
+}
+label .count-text {
+  font-size: 0.65rem;
+  color: #5f6368;
+}
+
+
+.count-text {
+  font-size: 0.65rem;         /* chhoti size */
+  color: #5f6368;             /* halka grey tone (Material Design style) */
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* work type css click open check box nav close css */
+
 /* Filters row with dividers */
 .filters-row {
     display: flex

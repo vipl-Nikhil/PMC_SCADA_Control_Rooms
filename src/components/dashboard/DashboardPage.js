@@ -10,6 +10,7 @@ import { FaCalendarAlt } from "react-icons/fa";  // icon import
 import "react-datepicker/dist/react-datepicker.css";
 
 
+
 import "./DashboardPage.css";
 
 import {
@@ -95,6 +96,7 @@ useEffect(() => {
   const uniqueContractors = [...new Set(workOrders.map(wo => wo.contractor))];
   setContractors(uniqueContractors);
 
+  
   // Unique plants
   const uniquePlants = [...new Set(workOrders.map(wo => wo.project))]; // ya wo.plant agar field available ho
   setPlants(uniquePlants);
@@ -119,10 +121,6 @@ useEffect(() => {
       prev === filterKey ? null : filterKey
     );
   };
-
-
-
-
 
   // Polyline options
   const polylineOptions = useMemo(
@@ -198,6 +196,18 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
    
   </div>
 ));
+
+//work type click nav 
+const [isOpen, setIsOpen] = useState(false);
+const [selectedTypes, setSelectedTypes] = useState({
+  all: true,
+  bt: true,
+  rmc: true,
+  both: true,
+});
+
+
+//close the work order card but not effect on work order
 
   return (
     <div className="dash-wrapper">
@@ -430,15 +440,34 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
             <div className="filters-layout">
               {/* LEFT SIDE: Summary counts */}
               <div className="filters-summary">
-                <div className="summary-card">
+               <div
+  className="summary-card"
+  onClick={() => {
+    setActiveKeys(new Set(["wo"])); // show Work Order cards
+    setShowFilters(true);           // reopen filters section
+  }}
+>
                   <div className="summary-count">{workOrders.length}</div>
                   <div className="summary-label">Work Order</div>
                 </div>
-                <div className="summary-card">
+                <div
+  className="summary-card"
+  onClick={() => {
+      console.log("Work Order clicked");
+    setActiveKeys(new Set(["wo"])); // show Work Order cards
+    setShowFilters(true);           // reopen filters section
+  }}
+>
                   <div className="summary-count">{contractors.length}</div>
                   <div className="summary-label">Contractor</div>
                 </div>
-                <div className="summary-card">
+               <div
+  className="summary-card"
+  onClick={() => {
+    setActiveKeys(new Set(["wo"])); // show Work Order cards
+    setShowFilters(true);           // reopen filters section
+  }}
+>
                   <div className="summary-count">{plants.length}</div>
                   <div className="summary-label">Plant</div>
                 </div>
@@ -462,17 +491,24 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
                 <div className="filters-row">
       <div className="date-filter">
         {/* Filter chip */}
-        <div
-          className="filter-chip"
-          onClick={() => setShowDatePicker(!showDatePicker)}
-        >
-          {startDate.toLocaleDateString("en-US")} to{" "}
-          {endDate.toLocaleDateString("en-US")}
-        </div>
+       <div
+  className="filter-chip"
+  onClick={() => {
+    setShowDatePicker(!showDatePicker); // toggle Date Picker
+    setIsOpen(false);                   // close Work Type card
+  }}
+>
+  {startDate.toLocaleDateString("en-US")} to{" "}
+  {endDate.toLocaleDateString("en-US")}
+</div>
+
 
         {/* Popup Date Picker */}
         {showDatePicker && (
           <div className="date-picker-popup">
+
+            
+            {/* Datepicket componets show the date format dd/mm/year prop used */}
             <DatePicker
               selected={startDate}
               onChange={(date) => setStartDate(date)}
@@ -493,7 +529,92 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
         )}
       </div>
 
-      <div className="filter-chip">Work Type</div>
+      <div>
+   <div
+  className="filter-chip"
+  onClick={() => {
+    setIsOpen(!isOpen);         // toggle Work Type card
+    setShowDatePicker(false);   // close Date Picker card
+  }}
+>
+  Work Type
+</div>
+
+
+{isOpen && (
+  <div className="filter-card">
+    <div className="checkbox-grid">
+      <label>
+        <input
+          type="checkbox"
+          checked={selectedTypes.all}
+          onChange={() =>
+            setSelectedTypes(prev => ({
+              ...prev,
+              all: !prev.all,
+              bt: !prev.all,
+              rmc: !prev.all,
+              both: !prev.all,
+            }))
+          }
+        />
+         <span>
+        All<br />
+         <span className="count-text">679</span>
+        </span>
+      </label>
+<label className="two-line-label">
+  <input
+    type="checkbox"
+    checked={selectedTypes.bt}
+    onChange={() =>
+      setSelectedTypes(prev => ({ ...prev, bt: !prev.bt }))
+    }
+  />
+  <span>
+    BT<br />
+    <span className="count-text">259</span>
+  </span>
+</label>
+
+
+      <label>
+        <input
+          type="checkbox"
+          checked={selectedTypes.rmc}
+          onChange={() =>
+            setSelectedTypes(prev => ({ ...prev, rmc: !prev.rmc }))
+          }
+        /> <span>
+        RMC <br />
+         <span className="count-text">361</span>
+        </span>
+      </label>
+    </div>
+
+    <div className="checkbox-row-single">
+      <label>
+        <input
+          type="checkbox"
+          checked={selectedTypes.both}
+          onChange={() =>
+            setSelectedTypes(prev => ({ ...prev, both: !prev.both }))
+          }
+        />
+        <span>
+      Both (BT & <br/> 
+      RMC) <br/>
+                 <span className="count-text">59</span>
+
+        </span>
+      </label>
+    </div>
+
+    <button onClick={() => setIsOpen(false)}>OK</button>
+  </div>
+)}
+
+  </div>
       <div className="filter-chip">Zone</div>
     </div>
               </div>
@@ -509,7 +630,7 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
                     <span className="status-dot" />
                     <span className="wo-id">{wo.id}</span>
                     <span className="wo-time">{wo.time}</span>
-                  </div>
+                  </div>  
 
                   <div className="wo-title">{wo.title}</div>
 
@@ -561,12 +682,6 @@ const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
       )}
     </>
   
-
-
-
-
-
-
       {/* Map Area */}
       <div className="map-area">
         {!isLoaded ? (

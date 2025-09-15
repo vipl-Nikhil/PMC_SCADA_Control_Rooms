@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
-import { useNavigate } from "react-router-dom";  //  import useNavigate
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const videoList = [
   "/videos/G-TAMB-login1.mp4",
@@ -52,10 +53,7 @@ const LoginPage = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();   //  FIX: useNavigate added here
-
-  // Dummy credentials
-  const dummyUser = { username: "admin", password: "12345" };
+  const navigate = useNavigate();
 
   function generateCaptcha() {
     const num1 = Math.floor(Math.random() * 10);
@@ -73,39 +71,53 @@ const LoginPage = ({ onLogin }) => {
     setCurrentVideo((prev) => (prev + 1) % videoList.length);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
 
-    // ❌ Wrong captcha
-    if (parseInt(inputCaptcha) !== captcha.sum) {
-      setError("❌ CAPTCHA incorrect!");
-      return;
-    }
 
-    // ❌ Wrong username/password
-    if (username !== dummyUser.username || password !== dummyUser.password) {
-      setError("❌ Invalid Username or Password");
-      return;
-    }
 
-    //  Success
+  //  API-based login
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
+
+  if (parseInt(inputCaptcha) !== captcha.sum) {
+    setError("❌ CAPTCHA incorrect!");
+    return;
+  }
+
+  try {
     setLoading(true);
-    setTimeout(() => {
+
+    const response = await axios.post("http://localhost:8089/user/login1", {
+      username,
+      password,
+    });
+
+    // Check backend response
+    if (response.data.token) {
+      // Login successful
       setSuccess(" Login Successful!");
-      setLoading(false);
 
-      // Save token in localStorage
-      localStorage.setItem("userToken", "12345");
+      // JWT token store
+      //userToken->data name
+      //response.data.token->data value
+      localStorage.setItem("userToken", response.data.token);
 
-      // Navigate to dashboard after success
-      setTimeout(() => {
-        navigate("/dashboard");
-        if (onLogin) onLogin();
-      }, 1500);
-    }, 500);
-  };
+      // App.js state update
+      if (onLogin) onLogin();
+
+      // Navigate to dashboard
+      navigate("/dashboard");
+    } else {
+      setError("❌ Invalid Username or Password");
+    }
+  } catch (err) {
+    setError("❌ Login failed. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="container">
@@ -133,7 +145,7 @@ const LoginPage = ({ onLogin }) => {
         )}
       </div>
 
-      {/* Radio Buttons */}
+      {/* Video Dots */}
       <div className="video-dots">
         {Object.keys(middleContent).map((key, index) => (
           <span
@@ -204,9 +216,7 @@ const LoginPage = ({ onLogin }) => {
               value={inputCaptcha}
               onChange={(e) => {
                 const val = e.target.value;
-                if (/^\d*$/.test(val)) {
-                  setInputCaptcha(val);
-                }
+                if (/^\d*$/.test(val)) setInputCaptcha(val);
               }}
               required
             />
@@ -216,7 +226,7 @@ const LoginPage = ({ onLogin }) => {
           {error && <p className="error">{error}</p>}
           {success && <p className="success">{success}</p>}
 
-          {/* Button */}
+          {/* Login Button */}
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? "Logging in..." : "LOGIN"}
           </button>
