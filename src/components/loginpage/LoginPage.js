@@ -95,28 +95,36 @@ const LoginPage = ({ onLogin }) => {
 
     // Check backend response
     if (response.data.token) {
-      // Login successful
-      setSuccess(" Login Successful!");
+        const token = response.data.token;
+        localStorage.setItem("userToken", token);
 
-      // JWT token store
-      //userToken->data name
-      //response.data.token->data value
-      localStorage.setItem("userToken", response.data.token);
+        //  Decode JWT expiry
+        //JSON.parse() converts it to an object → now you can read claims like exp, sub etc.
+        //atob() decodes Base64 → gives you a JSON string.
+        //token.split(".")[1] extracts the payload (Base64).
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const expiryTime = decoded.exp * 1000; // seconds → 1ms
+        const currentTime = Date.now();
 
-      // App.js state update
-      if (onLogin) onLogin();
+        //  Auto logout after token expiry
+        setTimeout(() => {
+          localStorage.removeItem("userToken");// front end store delete the item
+          navigate("/login");
+          alert("⏰ Session expired. Please login again.");
+        }, expiryTime - currentTime);
 
-      // Navigate to dashboard
-      navigate("/dashboard");
-    } else {
-      setError("❌ Invalid Username or Password");
+        setSuccess(" Login Successful!");
+        if (onLogin) onLogin();
+        navigate("/dashboard");
+      } else {
+        setError("❌ Invalid Username or Password");
+      }
+    } catch (err) {
+      setError("❌ Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    setError("❌ Login failed. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
   return (
