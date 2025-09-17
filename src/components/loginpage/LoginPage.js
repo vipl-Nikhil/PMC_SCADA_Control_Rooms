@@ -71,9 +71,6 @@ const LoginPage = ({ onLogin }) => {
     setCurrentVideo((prev) => (prev + 1) % videoList.length);
   };
 
-
-
-
   //  API-based login
  const handleLogin = async (e) => {
   e.preventDefault();
@@ -106,12 +103,11 @@ const LoginPage = ({ onLogin }) => {
         const expiryTime = decoded.exp * 1000; // seconds → 1ms
         const currentTime = Date.now();
 
-        //  Auto logout after token expiry
-        setTimeout(() => {
-          localStorage.removeItem("userToken");// front end store delete the item
-          navigate("/login");
-          alert("⏰ Session expired. Please login again.");
-        }, expiryTime - currentTime);
+       setTimeout(() => {
+  localStorage.removeItem("userToken");
+  navigate("/login");
+  alert("⏰ Session expired. Please login again.");
+}, 1000 * 60 * 60); //60,000 ms  1000 * 60 ->1 m // 3,600,000 ms  1000 * 60 * 60-> 1 hours 
 
         setSuccess(" Login Successful!");
         if (onLogin) onLogin();
@@ -243,5 +239,6 @@ const LoginPage = ({ onLogin }) => {
     </div>
   );
 };
+
 
 export default LoginPage;

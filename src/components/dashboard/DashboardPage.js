@@ -206,8 +206,59 @@ const [selectedTypes, setSelectedTypes] = useState({
   both: true,
 });
 
+//nav zone work 
+
+const [selectedZones, setSelectedZones] = useState({
+  all: false,
+  pmc: false,
+  zone4: false,
+  zone3: false,
+  zone2: false,
+  zone1: false,
+  pune: false,
+});
+
+const handleCheckboxChange = (zone) => {
+  if (zone === "all") {
+    const shouldSelectAll = !selectedZones.all;
+    const newState = {};
+    Object.keys(selectedZones).forEach(key => {
+      newState[key] = shouldSelectAll;
+    });
+    setSelectedZones(newState);
+  } else {
+    setSelectedZones(prev => ({
+      ...prev,
+      [zone]: !prev[zone],
+      all: false,
+    }));
+  }
+};
+
+const [showZoneCard, setShowZoneCard] = useState(false);
+
+const handleZoneClick = () => {
+  setShowZoneCard(prev => !prev);
+  setIsOpen(false);           // close Work Type
+  setShowDatePicker(false);   // close Date Picker
+
+  // Auto-select all checkboxes when Zone card opens
+  const newState = {};
+  Object.keys(selectedZones).forEach(key => {
+    newState[key] = true;
+  });
+  setSelectedZones(newState);
+};
+
+
+const handleZoneOk = () => {
+  console.log("Selected Zones:", selectedZones); // log or send to backend
+  setShowZoneCard(false); // close the Zone card
+};
 
 //close the work order card but not effect on work order
+
+//close nav bar button search
 
   return (
     <div className="dash-wrapper">
@@ -496,6 +547,7 @@ const [selectedTypes, setSelectedTypes] = useState({
   onClick={() => {
     setShowDatePicker(!showDatePicker); // toggle Date Picker
     setIsOpen(false);                   // close Work Type card
+      setShowZoneCard(false);             // close Zone card
   }}
 >
   {startDate.toLocaleDateString("en-US")} to{" "}
@@ -535,6 +587,7 @@ const [selectedTypes, setSelectedTypes] = useState({
   onClick={() => {
     setIsOpen(!isOpen);         // toggle Work Type card
     setShowDatePicker(false);   // close Date Picker card
+      setShowZoneCard(false);     // close Zone card
   }}
 >
   Work Type
@@ -615,8 +668,105 @@ const [selectedTypes, setSelectedTypes] = useState({
 )}
 
   </div>
-      <div className="filter-chip">Zone</div>
+<div className="filter-chip" onClick={handleZoneClick}
+
+>Zone</div>
+ 
+
     </div>
+ {showZoneCard && (
+  <div className="filter-card zone-card">
+    <div className="filter-card-header"></div>
+    <div className="filter-grid">
+      <div className="filter-item">
+        <label htmlFor="all">
+          All
+          <div className="count small">679</div>
+        </label>
+        <input
+          type="checkbox"
+          id="all"
+          checked={selectedZones.all}
+          onChange={() => handleCheckboxChange("all")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="pmc">
+          PMC
+          <div className="count small">665</div>
+        </label>
+        <input
+          type="checkbox"
+          id="pmc"
+          checked={selectedZones.pmc}
+          onChange={() => handleCheckboxChange("pmc")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="zone4">
+          Zone-4
+          <div className="count small" style={{ marginLeft: "-40px" }}>7</div>
+        </label>
+        <input
+          type="checkbox"
+          id="zone4"
+          checked={selectedZones.zone4}
+          onChange={() => handleCheckboxChange("zone4")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="zone3">
+          Zone-3
+          <div className="count small" style={{ marginLeft: "-33px" }}>0</div>
+        </label>
+        <input
+          type="checkbox"
+          id="zone3"
+          checked={selectedZones.zone3}
+          onChange={() => handleCheckboxChange("zone3")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="zone2">
+          Zone-2
+          <div className="count small" style={{ marginLeft: "-33px" }}>0</div>
+        </label>
+        <input
+          type="checkbox"
+          id="zone2"
+          checked={selectedZones.zone2}
+          onChange={() => handleCheckboxChange("zone2")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="zone1">
+          Zone-1
+          <div className="count small" style={{ marginLeft: "-33px" }}>3</div>
+        </label>
+        <input
+          type="checkbox"
+          id="zone1"
+          checked={selectedZones.zone1}
+          onChange={() => handleCheckboxChange("zone1")}
+        />
+      </div>
+      <div className="filter-item">
+        <label htmlFor="pune">
+          Pune
+          <div className="count small" style={{ marginLeft: "-24px" }}>4</div>
+        </label>
+        <input
+          type="checkbox"
+          id="pune"
+          checked={selectedZones.pune}
+          onChange={() => handleCheckboxChange("pune")}
+        />
+      </div>
+    </div>
+   <button className="filter-ok-btn1" onClick={handleZoneOk}>OK</button>
+
+  </div>
+)}
               </div>
             </div>
           </div>
@@ -635,7 +785,7 @@ const [selectedTypes, setSelectedTypes] = useState({
                   <div className="wo-title">{wo.title}</div>
 
                   <div className="wo-info">
-                    <p>{wo.contractor}</p>
+                      <m>{wo.contractor}</m>
                     <p>{wo.zone}</p>
                     <p>{wo.project}</p>
                     <p>{wo.age}</p>

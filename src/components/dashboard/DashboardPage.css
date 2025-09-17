@@ -4,6 +4,8 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
+    position: relative;
+
 }
 
 /* Map full background */
@@ -581,7 +583,14 @@ box-shadow: 0 0 15px rgb(12 12 7 / 8%);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   z-index: 1000;
   padding: 12px;
+ max-width: 410px;     /* sidebar max width fix */
+  width: 100%;          /* parent adjust */
+  overflow-y: auto;     /*  vertical scroll allow */
+  overflow-x: hidden;   /* horizontal scroll  */
 }
+
+/* nav scroll */
+
 
 /* Show only when any key is active */
 .filters-content.active {
@@ -701,6 +710,12 @@ background: #76b7b2;
   margin: 2px 0;
   color: #5a5a5a;
 }
+.wo-info m {
+  font-size: 13px;
+  margin: 2px 0;
+  color: #222;
+}
+
 
 /* Bottom icons row */
 .wo-icons {
@@ -938,7 +953,8 @@ background: #76b7b2;
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 4px;
+  
 }
 
 .checkbox-grid {
@@ -1037,6 +1053,59 @@ label .count-text {
 
 /* work type css click open check box nav close css */
 
+/*zone nav css */
+/* Grid stays same */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; /* card-to-card spacing */
+  align-items: start; /* avoid vertical stretch */
+}
+
+/* Item: label left, checkbox right, but very close */
+.filter-item {
+  display: flex;
+  flex-direction: row-reverse; /* checkbox right */
+  align-items: center;
+  gap: 6px;                  /* control closeness */
+  /* remove space-between if you had it earlier */
+  justify-content: flex-start;
+  width: max-content;        /* stops stretching in the grid cell */
+}
+
+/* Tighter label block */
+.filter-item label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.1;          /* tighter vertical rhythm */
+  margin: 0;                 /* no extra margins */
+  gap: 1px;
+}
+
+/* Count styling */
+.count {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.count.small {
+  font-size: 10px; /* smaller only for All */
+}
+/* Optional: slightly smaller checkbox for tighter look */
+.filter-item input[type="checkbox"] {
+  transform: scale(0.95);
+  /* ensures no default margins push it away */
+  margin: 0;
+}
+
+.filter-ok-btn1{
+
+}
+
+/*zone nav css close */
 /* Filters row with dividers */
 .filters-row {
     display: flex
