@@ -589,8 +589,84 @@ box-shadow: 0 0 15px rgb(12 12 7 / 8%);
   overflow-x: hidden;   /* horizontal scroll  */
 }
 
-/* nav scroll */
+/* nav left side work order 679 click left side button open list css */
 
+
+
+.summary-count {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.right-side-card {
+  position: fixed;
+      right: 1125px;
+  top: 46px;
+      width: 265px;;
+  min-height: 200px;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 9999;
+  padding: 16px;
+  border-radius: 8px;
+  bottom: 293px;
+}
+
+.search-bar {
+width: 73%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    margin-left: -px;
+    margin-right: 13px;
+}
+/* When input is focused */
+input.search-bar:focus {
+ border: 1px solid #66afe9 !important;
+  outline: none;
+  box-shadow: 0 0 2px rgba(102, 175, 233, 0.5);
+}
+
+
+.workorder-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.workorder-title {
+  color: #003366;   /* dark blue */
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.workorder-desc {
+  color: #333;      /* visible dark grey */
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0px;
+}
+.desc-line {
+  padding: 5px 0;
+  border-bottom: 1px solid #ccc; /* Adjust color to match screenshot */
+  color: #003366; /* Adjust text color if needed */
+  font-size: 12px; /* Optional: match font size */
+  margin-left: -14px;
+    margin-right: -18px;
+}
+
+.card-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
 /* Show only when any key is active */
 .filters-content.active {

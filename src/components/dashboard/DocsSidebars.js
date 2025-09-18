@@ -150,7 +150,7 @@ const DocsSidebar = ({ isDocsOpen, setIsDocsOpen }) => {
           </div>
         )}
 
-        {activeTab === "date" && (
+        {activeTab === "date" && (// optional in this not madetary 
           <div className="doc-item">
             <span className="dot green"></span>
             <div className="doc-info">

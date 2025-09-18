@@ -205,7 +205,7 @@ const [selectedTypes, setSelectedTypes] = useState({
   rmc: true,
   both: true,
 });
-
+    
 //nav zone work 
 
 const [selectedZones, setSelectedZones] = useState({
@@ -256,9 +256,13 @@ const handleZoneOk = () => {
   setShowZoneCard(false); // close the Zone card
 };
 
-//close the work order card but not effect on work order
+//nav bar work order 769 left side icon click open list
+const [showWorkOrderList, setShowWorkOrderList] = useState(false);
+const [searchTerm, setSearchTerm] = useState("");
+const [activeCard, setActiveCard] = useState(null); // track active card
 
-//close nav bar button search
+
+
 
   return (
     <div className="dash-wrapper">
@@ -490,39 +494,107 @@ const handleZoneOk = () => {
           <div className="filters-container">
             <div className="filters-layout">
               {/* LEFT SIDE: Summary counts */}
-              <div className="filters-summary">
-               <div
-  className="summary-card"
-  onClick={() => {
-    setActiveKeys(new Set(["wo"])); // show Work Order cards
-    setShowFilters(true);           // reopen filters section
-  }}
->
-                  <div className="summary-count">{workOrders.length}</div>
-                  <div className="summary-label">Work Order</div>
-                </div>
-                <div
-  className="summary-card"
-  onClick={() => {
-      console.log("Work Order clicked");
-    setActiveKeys(new Set(["wo"])); // show Work Order cards
-    setShowFilters(true);           // reopen filters section
-  }}
->
-                  <div className="summary-count">{contractors.length}</div>
-                  <div className="summary-label">Contractor</div>
-                </div>
-               <div
-  className="summary-card"
-  onClick={() => {
-    setActiveKeys(new Set(["wo"])); // show Work Order cards
-    setShowFilters(true);           // reopen filters section
-  }}
->
-                  <div className="summary-count">{plants.length}</div>
-                  <div className="summary-label">Plant</div>
-                </div>
-              </div>
+      <div className="filters-summary">
+  {/* Wrapper for hover logic */}
+  <div
+    className="card-wrapper"
+    onMouseEnter={() => setActiveCard("wo")}
+    onMouseLeave={() => setActiveCard(null)}
+  >
+    {/* Work Order Card */}
+    <div className="summary-card">
+      <div className="summary-count">{workOrders.length}</div>
+      <div className="summary-label">Work Order</div>
+    </div>
+
+    {/* Card render */}
+    {activeCard === "wo" && (
+      <div className="right-side-card">
+        <input
+          type="text"
+          placeholder="Search Work Orders by Name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+
+        <p className="workorder-desc">
+          <div className="desc-line">Testing purpose for vasundhara Company</div>
+          <div className="desc-line">B G Shirke Company Samorial 24 M DP Rasta Concrete Karane</div>
+          <div className="desc-line">Prabhag Kra 7 Madhye Gokhalenagar Parisratil Ghar Kra 507 Te Ghar Kra 545 Yethil Drainage Line Durusati Vishyak Karne.</div>
+          <div className="desc-line">Ganeshkhind Rasta Rundikarnat Yenarya Surymukhi Datt Mandir Satlantrachya Anushagane Chittaranjan Vatika Udhyanatil Milakittila Mandirasathi Vividh Kame Karne.</div>
+          <div className="desc-line">Mudhwa Sa. Na 58/7 Jadhav Vasti Paper Mil Yethye Rasta Vikasit Karne.</div>
+        </p>
+
+        <ul className="workorder-list">
+          {workOrders
+            .filter((order) =>
+              order.name?.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((order, i) => (
+              <li key={i} className="workorder-item">
+                <p className="workorder-title">{order.name}</p>
+                <p className="workorder-desc">
+                  Dummy description for <strong>{order.name}</strong>.
+                </p>
+              </li>
+            ))}
+        </ul>
+      </div>
+)}
+
+
+    {/* WorkOrder list panel (toggle) */}
+  {showWorkOrderList && (
+  <div className={`workorder-panel ${showWorkOrderList ? "show" : ""}`}>
+    <input
+      type="text"
+      placeholder="Search Work Orders by Name..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="search-bar"
+    />
+
+    <div className="workorder-list">
+      {workOrders
+        .filter((order) =>
+          order.name?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .map((order, index) => (
+          <div key={index} className="workorder-item">
+            {order.name}
+          </div>
+        ))}
+    </div>
+  </div>
+)}
+
+  </div>
+
+  {/* Contractor card */}
+  <div
+    className="summary-card"
+    onClick={() => {
+      setActiveKeys(new Set(["contractor"]));
+      setShowFilters(true);
+    }}
+  >
+    <div className="summary-count">{contractors.length}</div>
+    <div className="summary-label">Contractor</div>
+  </div>
+
+  {/* Plant card */}
+  <div
+    className="summary-card"
+    onClick={() => {
+      setActiveKeys(new Set(["plant"]));
+      setShowFilters(true);
+    }}
+  >
+    <div className="summary-count">{plants.length}</div>
+    <div className="summary-label">Plant</div>
+  </div>
+</div>
 
               {/* RIGHT SIDE: Search + Filters */}
               <div className="filters-right">
